@@ -5,6 +5,7 @@ import asyncio
 import re
 
 import aiohttp
+from TransMux.snippets.debug import listen
 
 from yutto._typing import EpisodeData, FId, MId
 from yutto.api.space import get_favourite_avids, get_favourite_info, get_user_name
@@ -41,9 +42,10 @@ class FavouritesExtractor(BatchExtractor):
             get_user_name(session, self.mid),
             get_favourite_info(session, self.fid),
         )
+        listen()
         Logger.custom(favourite_info["title"], Badge("收藏夹", fore="black", back="cyan"))
 
-        ugc_video_info_list: list[tuple[UgcVideoListItem, str, int]] = []
+        ugc_video_info_list: list[tuple[UgcVideoListItem, str, int, str]] = []
 
         for avid in await get_favourite_avids(session, self.fid):
             try:
@@ -60,6 +62,7 @@ class FavouritesExtractor(BatchExtractor):
                             ugc_video_item,
                             ugc_video_list["title"],
                             ugc_video_list["pubdate"],
+                            ugc_video_item["metadata"]["actor"][0]["name"],
                         )
                     )
             except NotFoundError as e:
@@ -78,9 +81,10 @@ class FavouritesExtractor(BatchExtractor):
                         "username": username,
                         "series_title": favourite_info["title"],
                         "pubdate": pubdate,
+                        "author": author
                     },
                     "{username}的收藏夹/{series_title}/{title}/{name}",
                 )
             )
-            for ugc_video_item, title, pubdate in ugc_video_info_list
+            for ugc_video_item, title, pubdate, author in ugc_video_info_list
         ]
