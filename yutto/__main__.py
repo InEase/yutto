@@ -9,6 +9,7 @@ from collections.abc import Sequence
 from typing import Any, Literal
 
 import aiohttp
+from TransMux.db import supabase
 from typing_extensions import TypeAlias
 
 from yutto.__version__ import VERSION as yutto_version
@@ -320,6 +321,8 @@ async def run(args_list: list[argparse.Namespace]):
                         },
                     },
                 )
+                supabase.insert_data("Bilibili", {"uid": str(episode_data["uid"])})
+
                 Logger.new_line()
             Logger.new_line()
 

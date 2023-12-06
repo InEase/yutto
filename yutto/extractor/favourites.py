@@ -5,7 +5,7 @@ import asyncio
 import re
 
 import aiohttp
-from TransMux.snippets.debug import listen
+from TransMux.db import supabase
 
 from yutto._typing import EpisodeData, FId, MId
 from yutto.api.space import get_favourite_avids, get_favourite_info, get_user_name
@@ -42,12 +42,15 @@ class FavouritesExtractor(BatchExtractor):
             get_user_name(session, self.mid),
             get_favourite_info(session, self.fid),
         )
-        listen()
         Logger.custom(favourite_info["title"], Badge("收藏夹", fore="black", back="cyan"))
 
         ugc_video_info_list: list[tuple[UgcVideoListItem, str, int, str]] = []
 
         for avid in await get_favourite_avids(session, self.fid):
+            if supabase.check_existed("Bilibili", uid=str(avid)):
+                Logger.info(f"已存在 {avid}，跳过")
+                continue
+
             try:
                 ugc_video_list = await get_ugc_video_list(session, avid)
                 # 在使用 SESSDATA 时，如果不去事先 touch 一下视频链接的话，是无法获取 episode_data 的
@@ -81,7 +84,7 @@ class FavouritesExtractor(BatchExtractor):
                         "username": username,
                         "series_title": favourite_info["title"],
                         "pubdate": pubdate,
-                        "author": author
+                        "author": author,
                     },
                     "{username}的收藏夹/{series_title}/{title}/{name}",
                 )

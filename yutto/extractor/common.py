@@ -161,6 +161,7 @@ async def extract_ugc_video_data(
         file_path = Path(args.dir, subpath)
         output_dir, filename = str(file_path.parent), file_path.name
         return EpisodeData(
+            uid=str(avid),
             videos=videos,
             audios=audios,
             subtitles=subtitles,

@@ -159,7 +159,7 @@ class MultiLangSubtitle(TypedDict):
 
 class EpisodeData(TypedDict):
     """剧集数据，包含了一个视频资源的基本信息以及相关资源"""
-
+    uid: str | None
     videos: list[VideoUrlMeta]
     audios: list[AudioUrlMeta]
     subtitles: list[MultiLangSubtitle]
