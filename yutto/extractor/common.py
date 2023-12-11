@@ -155,6 +155,7 @@ async def extract_ugc_video_data(
             "pubdate": UNKNOWN,
             "download_date": ugc_video_info["metadata"]["dateadded"],
             "owner_uid": owner_uid,
+            "AvId": str(avid),
         }
         subpath_variables_base.update(subpath_variables)
         subpath = resolve_path_template(args.subpath_template, auto_subpath_template, subpath_variables_base)
