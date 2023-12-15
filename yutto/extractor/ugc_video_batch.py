@@ -4,6 +4,7 @@ import argparse
 import re
 
 import aiohttp
+from TransMux.db import supabase
 
 from yutto._typing import AId, AvId, BvId, EpisodeData
 from yutto.api.ugc_video import get_ugc_video_list
@@ -82,5 +83,5 @@ class UgcVideoBatchExtractor(BatchExtractor):
                     "{title}/{name}",
                 )
             )
-            for ugc_video_item in ugc_video_list["pages"]
+            for ugc_video_item in ugc_video_list["pages"] if not supabase.check_existed("Bilibili", uid=str(ugc_video_item["avid"]))
         ]

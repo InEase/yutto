@@ -5,11 +5,12 @@ import asyncio
 import re
 
 import aiohttp
+from TransMux.db import supabase
 
 from yutto._typing import EpisodeData, MId, SeriesId
 from yutto.api.collection import get_collection_details
 from yutto.api.space import get_user_name
-from yutto.api.ugc_video import UgcVideoListItem, get_ugc_video_list
+from yutto.api.ugc_video import get_ugc_video_list, UgcVideoListItem
 from yutto.exceptions import NotFoundError
 from yutto.extractor._abc import BatchExtractor
 from yutto.extractor.common import extract_ugc_video_data
@@ -67,6 +68,10 @@ class CollectionExtractor(BatchExtractor):
         for item in collection_details["pages"]:
             try:
                 avid = item["avid"]
+                if supabase.check_existed("Bilibili", uid=str(avid)):
+                    Logger.info(f"已存在 {avid}，跳过")
+                    break
+
                 ugc_video_list = await get_ugc_video_list(session, avid)
                 if not Filter.verify_timer(ugc_video_list["pubdate"]):
                     Logger.debug(f"因为发布时间为 {ugc_video_list['pubdate']}，跳过 {ugc_video_list['title']}")

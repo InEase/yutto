@@ -4,10 +4,11 @@ import argparse
 import re
 
 import aiohttp
+from TransMux.db import supabase
 
 from yutto._typing import EpisodeData, MId
 from yutto.api.space import get_user_name, get_user_space_all_videos_avids
-from yutto.api.ugc_video import UgcVideoListItem, get_ugc_video_list
+from yutto.api.ugc_video import get_ugc_video_list, UgcVideoListItem
 from yutto.exceptions import NotFoundError
 from yutto.extractor._abc import BatchExtractor
 from yutto.extractor.common import extract_ugc_video_data
@@ -39,6 +40,10 @@ class UserAllUgcVideosExtractor(BatchExtractor):
 
         ugc_video_info_list: list[tuple[UgcVideoListItem, str, int]] = []
         for avid in await get_user_space_all_videos_avids(session, self.mid):
+            if supabase.check_existed("Bilibili", uid=str(avid)):
+                Logger.info(f"已存在 {avid}，跳过")
+                break
+
             try:
                 ugc_video_list = await get_ugc_video_list(session, avid)
                 if not Filter.verify_timer(ugc_video_list["pubdate"]):
