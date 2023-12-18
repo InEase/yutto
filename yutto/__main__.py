@@ -279,7 +279,7 @@ async def run(args_list: list[argparse.Namespace]):
                 sys.exit(ErrorCode.WRONG_URL_ERROR.value)
 
             # 下载～
-            for i, episode_data_coro in enumerate(download_list):
+            for i, episode_data_coro in enumerate(download_list[::-1]):
                 if episode_data_coro is None:
                     continue
 
