@@ -213,6 +213,10 @@ async def start_downloader(
     metadata_format = options["metadata_format"]
 
     Logger.info(f"开始处理视频 {filename}")
+    if len(filename) > 50:
+        Logger.warning("文件名过长，可能导致文件系统无法保存")
+        filename = filename[:50]
+
     tmp_dir.mkdir(parents=True, exist_ok=True)
     video_path = tmp_dir.joinpath(filename + "_video.m4s")
     audio_path = tmp_dir.joinpath(filename + "_audio.m4s")
