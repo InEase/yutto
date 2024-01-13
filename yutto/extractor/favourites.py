@@ -45,10 +45,18 @@ class FavouritesExtractor(BatchExtractor):
         Logger.custom(favourite_info["title"], Badge("收藏夹", fore="black", back="cyan"))
 
         ugc_video_info_list: list[tuple[UgcVideoListItem, str, int, str]] = []
+        # 允许重复次数
+        repeat = 0
+        repeat_max = 5
 
         for avid in await get_favourite_avids(session, self.fid):
             if supabase.check_existed("Bilibili", uid=str(avid)):
                 Logger.info(f"已存在 {avid}，跳过")
+                repeat += 1
+                if repeat >= repeat_max:
+                    Logger.info(f"重复次数达到 {repeat_max}，跳过剩余视频")
+                    continue
+
                 break
 
             try:

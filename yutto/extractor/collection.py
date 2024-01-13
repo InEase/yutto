@@ -65,11 +65,20 @@ class CollectionExtractor(BatchExtractor):
         episodes = parse_episodes_selection(args.episodes, len(collection_details["pages"]))
         collection_details["pages"] = list(filter(lambda item: item["id"] in episodes, collection_details["pages"]))
 
+        # 允许重复次数
+        repeat = 0
+        repeat_max = 5
+
         for item in collection_details["pages"]:
             try:
                 avid = item["avid"]
                 if supabase.check_existed("Bilibili", uid=str(avid)):
                     Logger.info(f"已存在 {avid}，跳过")
+                    repeat += 1
+                    if repeat >= repeat_max:
+                        Logger.info(f"重复次数达到 {repeat_max}，跳过剩余视频")
+                        continue
+
                     break
 
                 ugc_video_list = await get_ugc_video_list(session, avid)
