@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "yutto"
-version = "2.0.0-beta.31"
+version = "2.0.0-beta.33"
 description = "🧊 一个可爱且任性的 B 站视频下载器"
 authors = ["Nyakku Shigure <sigure.qaq@gmail.com>"]
 license = "GPL-3.0"
@@ -34,7 +34,7 @@ dict2xml = "1.7.3"
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2.2"
 pyright = "^1.1.336"
-pytest-rerunfailures = "^12.0"
+pytest-rerunfailures = "^13.0"
 ruff = "^0.1.6"
 
 [tool.poetry.scripts]
@@ -45,9 +45,6 @@ yutto = "yutto.__main__:main"
 
 [tool.pytest.ini_options]
 markers = ["api", "e2e", "processor", "ignore", "ci_skip", "ci_only"]
-
-[tool.black]
-line-length = 120
 
 [tool.pyright]
 include = ["yutto", "tests"]
@@ -77,7 +74,7 @@ select = [
   "RUF100",
 ]
 ignore = [
-  "E501", # line too long, duplicate with black
+  "E501", # line too long, duplicate with ruff fmt
   "F401", # imported but unused, duplicate with pyright
   "F841", # local variable is assigned to but never used, duplicate with pyright
 ]

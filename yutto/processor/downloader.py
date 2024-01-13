@@ -174,10 +174,17 @@ def merge_video_and_audio(
         ["-strict", "unofficial"],
         ["-tag:v", vtag] if vtag is not None else [],
         ["-threads", str(os.cpu_count())],
-        ["-y", str(output_path)],
+        # Using double dash to make sure that the output file name is not parsed as an option
+        # if the output file name starts with a dash
+        ["-y", "--", str(output_path)],
     ]
 
-    ffmpeg.exec(functools.reduce(lambda prev, cur: prev + cur, args_list))
+    result = ffmpeg.exec(functools.reduce(lambda prev, cur: prev + cur, args_list))
+    if result.returncode != 0:
+        Logger.error("合并失败！")
+        Logger.error(result.stderr.decode())
+        return
+
     Logger.info("合并完成！")
 
     if video is not None:
@@ -210,7 +217,9 @@ async def start_downloader(
     video_path = tmp_dir.joinpath(filename + "_video.m4s")
     audio_path = tmp_dir.joinpath(filename + "_audio.m4s")
 
-    video = select_video(videos, options["video_quality"], options["video_download_codec"])
+    video = select_video(
+        videos, options["video_quality"], options["video_download_codec"], options["video_download_codec_priority"]
+    )
     audio = select_audio(audios, options["audio_quality"], options["audio_download_codec"])
     will_download_video = video is not None and require_video
     will_download_audio = audio is not None and require_audio
