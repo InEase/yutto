@@ -331,7 +331,7 @@ async def run(args_list: list[argparse.Namespace]):
                         },
                     },
                 )
-                supabase.insert_data("Bilibili", {"uid": str(episode_data["uid"])})
+                supabase.upsert_data("Bilibili", {"uid": str(episode_data["uid"])})
 
                 Logger.new_line()
             Logger.new_line()
