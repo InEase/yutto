@@ -72,10 +72,10 @@ class CollectionExtractor(BatchExtractor):
         for item in collection_details["pages"]:
             try:
                 avid = item["avid"]
-                if args.database_check and supabase.check_existed("Bilibili", uid=str(avid)):
-                    Logger.info(f"已存在 {avid}，跳过")
+                if supabase.check_existed("Bilibili", uid=str(avid)):
+                    Logger.info(f"已存在 {avid}，跳过，重复次数 {repeat}")
                     repeat += 1
-                    if repeat >= repeat_max:
+                    if args.database_check and repeat >= repeat_max:
                         Logger.info(f"重复次数达到 {repeat_max}，跳过剩余视频")
                         break
 

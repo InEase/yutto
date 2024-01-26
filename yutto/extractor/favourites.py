@@ -51,7 +51,7 @@ class FavouritesExtractor(BatchExtractor):
 
         for avid in await get_favourite_avids(session, self.fid):
             if supabase.check_existed("Bilibili", uid=str(avid)):
-                Logger.info(f"已存在 {avid}，跳过，重复次数 {repeat_max}")
+                Logger.info(f"已存在 {avid}，跳过，重复次数 {repeat}")
                 repeat += 1
                 if args.database_check and repeat >= repeat_max:
                     Logger.info(f"重复次数达到 {repeat_max}，跳过剩余视频")
