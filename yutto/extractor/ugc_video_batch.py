@@ -69,8 +69,22 @@ class UgcVideoBatchExtractor(BatchExtractor):
         episodes = parse_episodes_selection(args.episodes, len(ugc_video_list["pages"]))
         ugc_video_list["pages"] = list(filter(lambda item: item["id"] in episodes, ugc_video_list["pages"]))
 
-        return [
-            CoroutineWrapper(
+        result = []
+        # 允许重复次数
+        repeat = 0
+        repeat_max = 5
+        for ugc_video_item in ugc_video_list["pages"]:
+            avid = ugc_video_item["avid"]
+            if args.database_check and supabase.check_existed("Bilibili", uid=str(avid)):
+                Logger.info(f"已存在 {avid}，跳过")
+                repeat += 1
+                if repeat >= repeat_max:
+                    Logger.info(f"重复次数达到 {repeat_max}，跳过剩余视频")
+                    continue
+
+                break
+                
+            result.append(CoroutineWrapper(
                 extract_ugc_video_data(
                     session,
                     ugc_video_item["avid"],
@@ -82,6 +96,7 @@ class UgcVideoBatchExtractor(BatchExtractor):
                     },
                     "{title}/{name}",
                 )
-            )
-            for ugc_video_item in ugc_video_list["pages"] if not supabase.check_existed("Bilibili", uid=str(ugc_video_item["avid"]))
-        ]
+            ))
+
+
+        return result

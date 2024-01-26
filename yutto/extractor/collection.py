@@ -72,7 +72,7 @@ class CollectionExtractor(BatchExtractor):
         for item in collection_details["pages"]:
             try:
                 avid = item["avid"]
-                if supabase.check_existed("Bilibili", uid=str(avid)):
+                if args.database_check and supabase.check_existed("Bilibili", uid=str(avid)):
                     Logger.info(f"已存在 {avid}，跳过")
                     repeat += 1
                     if repeat >= repeat_max:

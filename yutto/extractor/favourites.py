@@ -50,7 +50,7 @@ class FavouritesExtractor(BatchExtractor):
         repeat_max = 5
 
         for avid in await get_favourite_avids(session, self.fid):
-            if supabase.check_existed("Bilibili", uid=str(avid)):
+            if args.database_check and supabase.check_existed("Bilibili", uid=str(avid)):
                 Logger.info(f"已存在 {avid}，跳过")
                 repeat += 1
                 if repeat >= repeat_max:

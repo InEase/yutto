@@ -54,7 +54,7 @@ class SeriesExtractor(BatchExtractor):
 
         ugc_video_info_list: list[tuple[UgcVideoListItem, str, int]] = []
         for avid in await get_medialist_avids(session, self.series_id, self.mid):
-            if supabase.check_existed("Bilibili", uid=str(avid)):
+            if args.database_check and supabase.check_existed("Bilibili", uid=str(avid)):
                 Logger.info(f"已存在 {avid}，跳过")
                 repeat += 1
                 if repeat >= repeat_max:
