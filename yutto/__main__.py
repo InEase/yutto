@@ -210,7 +210,7 @@ def cli() -> argparse.ArgumentParser:
     group_batch_file.add_argument("--no-inherit", action="store_true", help="不继承父级参数")
 
     # --- Mux Skip Database Check ---
-    group_common.add_argument("--database-check", action="store_false", help="进行数据库检查")
+    group_common.add_argument("--database-check", action="store_true", help="进行数据库检查")
     return parser
 
 
