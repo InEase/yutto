@@ -44,10 +44,10 @@ class UserAllUgcVideosExtractor(BatchExtractor):
 
         ugc_video_info_list: list[tuple[UgcVideoListItem, str, int]] = []
         for avid in await get_user_space_all_videos_avids(session, self.mid):
-            if args.database_check and supabase.check_existed("Bilibili", uid=str(avid)):
-                Logger.info(f"已存在 {avid}，跳过")
+            if supabase.check_existed("Bilibili", uid=str(avid)):
+                Logger.info(f"已存在 {avid}，跳过，重复次数 {repeat_max}")
                 repeat += 1
-                if repeat >= repeat_max:
+                if args.database_check and repeat >= repeat_max:
                     Logger.info(f"重复次数达到 {repeat_max}，跳过剩余视频")
                     break
 
