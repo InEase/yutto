@@ -80,9 +80,9 @@ class UgcVideoBatchExtractor(BatchExtractor):
                 repeat += 1
                 if repeat >= repeat_max:
                     Logger.info(f"重复次数达到 {repeat_max}，跳过剩余视频")
-                    continue
+                    break
 
-                break
+                continue
                 
             result.append(CoroutineWrapper(
                 extract_ugc_video_data(

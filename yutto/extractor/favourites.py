@@ -55,9 +55,9 @@ class FavouritesExtractor(BatchExtractor):
                 repeat += 1
                 if repeat >= repeat_max:
                     Logger.info(f"重复次数达到 {repeat_max}，跳过剩余视频")
-                    continue
+                    break
 
-                break
+                continue
 
             try:
                 ugc_video_list = await get_ugc_video_list(session, avid)
