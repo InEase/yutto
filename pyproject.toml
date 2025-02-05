@@ -31,6 +31,7 @@ dependencies = [
   "tomli>=2.0.2; python_version < '3.11'",
   "pydantic>=2.10.6",
   "nocodb>=2.0.1",
+  "debugpy>=1.8.12",
 ]
 
 [project.urls]

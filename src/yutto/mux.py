@@ -1,6 +1,6 @@
 from nocodb.nocodb import NocoDBProject, APIToken
 from nocodb.infra.requests_client import NocoDBRequestsClient
-
+from nocodb.filters import LikeFilter, EqFilter, And
 
 # Usage with API Token
 client = NocoDBRequestsClient(
@@ -10,9 +10,30 @@ client = NocoDBRequestsClient(
     "http://localhost:8080",
 )
 
+# 🔗 elchicodepython/python-nocodb: NocoDB Python API Client
+# https://github.com/ElChicoDePython/python-nocodb
+
 B站数据库 = NocoDBProject("noco", "plmocv0je8gfamj")
 收藏夹下载索引_id = "m9u9qneyouwzm6i"
 下载视频记录_id = "m7ks6h2zrkoqgbm"
 
+单个收藏夹最大允许重复次数 = 10
+
+def 检查视频是否下载过(bvid: str) -> bool:
+    return client.table_find_one(
+        B站数据库,
+        下载视频记录_id,
+        filter_obj=EqFilter("bvid", bvid),
+        params={"sort": "-created_at"},
+    )
+
+
 if __name__ == "__main__":
-    print(client.table_row_list(B站数据库, 收藏夹下载索引_id))
+    print(
+        client.table_row_list(
+            B站数据库,
+            收藏夹下载索引_id,
+            params={"limit": 1000},
+            filter_obj=EqFilter("启用", True),
+        )
+    )
