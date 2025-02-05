@@ -13,3 +13,6 @@ client = NocoDBRequestsClient(
 B站数据库 = NocoDBProject("noco", "plmocv0je8gfamj")
 收藏夹下载索引_id = "m9u9qneyouwzm6i"
 下载视频记录_id = "m7ks6h2zrkoqgbm"
+
+if __name__ == "__main__":
+    print(client.table_row_list(B站数据库, 收藏夹下载索引_id))
