@@ -4,7 +4,7 @@
   "python.analysis.inlayHints.functionReturnTypes": true,
   "python.analysis.inlayHints.variableTypes": true,
   "[python]": {
-    "editor.defaultFormatter": "charliermarsh.ruff"
+    "editor.defaultFormatter": "ms-python.black-formatter"
   },
   "rust-analyzer.linkedProjects": [
     "${workspaceFolder}/packages/biliass/rust/Cargo.toml"
