@@ -9,7 +9,7 @@ from loguru import logger
     "--login-strict",
     "--with-metadata",
     "-d",
-    "/Users/transmux/Projects/Backup",
+    "/Users/transmux/Projects/Backup/Bili收藏视频/",
     "-c",
     "b70946c1%2C1754303320%2Cfad6b%2A22CjCpf5aQDhNNLtq7xkLnKcbKZtuf4GeN4q_N9lVdBhVw4IQANy-Wx37N-SN4xLknKIwSVjlMVUNIekxoS2lMX09CRDlKZEFOa0xoeFFoQjhpSE95MEQwSzZ0RFprSk9vcFRWZjhybGRnMk9FWF9TV0J1Zmx6T1R4M2l1NzlKS3RZSWJBU0gwT0RBIIEC",
 ]
