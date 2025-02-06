@@ -21,12 +21,12 @@ def 执行抓取():
 
     logger.info(f"共有 {len(下载索引)} 个下载索引")
 
-    for item in 下载索引:
-        logger.info(f"开始下载 {item}")
+    for index, item in enumerate(下载索引):
+        logger.info(f"开始下载 {item} ({index + 1}/{len(下载索引)})")
         # os 执行命令
         os.system(f"yutto {' '.join(命令行参数)} {item}")
 
-        logger.info(f"{item} 抓取完成，等待10秒")
+        logger.info(f"{item} 抓取完成，等待10秒 ({index + 1}/{len(下载索引)})")
         time.sleep(10)
 
     logger.info("所有下载完成")
