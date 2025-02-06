@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import asyncio
 import copy
+from datetime import datetime
+from datetime import datetime
 import os
 import re
 import shlex
@@ -27,6 +29,8 @@ from yutto.extractor import (
     UserAllUgcVideosExtractor,
     UserWatchLaterExtractor,
 )
+from yutto.mux import 插入视频下载记录
+from yutto.mux import 插入视频下载记录
 from yutto.processor.downloader import DownloadState, start_downloader
 from yutto.processor.parser import file_scheme_parser
 from yutto.processor.path_resolver import create_unique_path_resolver
@@ -198,6 +202,23 @@ async def run(ctx: FetcherContext, args_list: list[argparse.Namespace]):
                         "danmaku_options": parse_danmaku_options(args),
                     },
                 )
+
+                # 发送到数据库记录已下载视频
+                if episode_data["metadata"]:
+                    发布时间 = episode_data["metadata"].get("premiered")
+                    # 时间戳转换为时间
+                    发布时间 = datetime.fromtimestamp(发布时间)
+                    发布时间 = 发布时间.strftime("%Y-%m-%d")
+                    记录的信息 = {
+                        "标题": episode_data["metadata"].get("title"),
+                        "show_title": episode_data["metadata"].get("show_title"),
+                        "作者": episode_data["metadata"].get("actor")[0].get("name"),
+                        "标签": ",".join(episode_data["metadata"].get("tag")),
+                        "链接": episode_data["metadata"].get("website"),
+                        "bvid": episode_data["metadata"].get("bvid"),
+                        "发布时间": 发布时间,
+                    }
+                    插入视频下载记录(记录的信息)
                 Logger.new_line()
             Logger.new_line()
 

@@ -19,6 +19,7 @@ B站数据库 = NocoDBProject("noco", "plmocv0je8gfamj")
 
 单个收藏夹最大允许重复次数 = 10
 
+
 def 检查视频是否下载过(bvid: str) -> bool:
     return client.table_find_one(
         B站数据库,
@@ -28,12 +29,13 @@ def 检查视频是否下载过(bvid: str) -> bool:
     )
 
 
-if __name__ == "__main__":
-    print(
-        client.table_row_list(
-            B站数据库,
-            收藏夹下载索引_id,
-            params={"limit": 1000},
-            filter_obj=EqFilter("启用", True),
-        )
+def 插入视频下载记录(视频信息: dict):
+    return client.table_row_create(
+        B站数据库,
+        下载视频记录_id,
+        视频信息,
     )
+
+
+if __name__ == "__main__":
+    print(检查视频是否下载过("asdas"))

@@ -182,6 +182,8 @@ async def extract_ugc_video_data(
             await get_danmaku(ctx, client, cid, avid, args.danmaku_format) if args.require_danmaku else EmptyDanmakuData
         )
         metadata = ugc_video_info["metadata"] if args.require_metadata else None
+        if metadata:
+            metadata["bvid"] = str(avid.as_bvid())
         if metadata and chapter_info_data:
             attach_chapter_info(metadata, chapter_info_data)
         cover_data = (
