@@ -1,4 +1,6 @@
 from __future__ import annotations
+import warnings
+warnings.filterwarnings("ignore", message=".*LibreSSL.*")
 
 import asyncio
 import copy
