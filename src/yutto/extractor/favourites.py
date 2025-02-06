@@ -51,7 +51,7 @@ class FavouritesExtractor(BatchExtractor):
             favourite_info["title"], Badge("收藏夹", fore="black", back="cyan")
         )
 
-        ugc_video_info_list: list[tuple[UgcVideoListItem, str, int]] = []
+        ugc_video_info_list: list[tuple[UgcVideoListItem, str, int, str]] = []
 
         repeat = 0
         for avid in await get_favourite_avids(ctx, client, self.fid):
@@ -86,6 +86,7 @@ class FavouritesExtractor(BatchExtractor):
                             ugc_video_item,
                             ugc_video_list["title"],
                             ugc_video_list["pubdate"],
+                            ugc_video_item["metadata"].get("actor")[0].get("name"),
                         )
                     )
             except NotFoundError as e:
@@ -102,12 +103,12 @@ class FavouritesExtractor(BatchExtractor):
                     args,
                     {
                         "title": title,
-                        "username": username,
+                        "username": actor_name,
                         "series_title": favourite_info["title"],
                         "pubdate": pubdate,
                     },
                     "{owner_uid}-{username}/{bvid}-{name}-{id}",
                 )
             )
-            for ugc_video_item, title, pubdate in ugc_video_info_list
+            for ugc_video_item, title, pubdate, actor_name in ugc_video_info_list
         ]
