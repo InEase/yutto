@@ -18,7 +18,7 @@ B站数据库 = NocoDBProject("noco", "plmocv0je8gfamj")
 下载视频记录_id = "m7ks6h2zrkoqgbm"
 之前抓取的视频记录_id = "mntafuio1pn0a2a"
 
-单个收藏夹最大允许重复次数 = 10
+单个收藏夹最大允许重复次数 = 3
 
 
 def 检查视频是否下载过(bvid: str) -> bool:
@@ -47,8 +47,13 @@ def 插入视频下载记录(视频信息: dict):
 
 
 def 获取所有下载索引():
-    return client.table_row_list(B站数据库, 收藏夹下载索引_id, params={"limit": 1000})
+    return client.table_row_list(
+        B站数据库,
+        收藏夹下载索引_id,
+        params={"limit": 1000},
+        filter_obj=EqFilter("视频抓取", True),
+    )
 
 
 if __name__ == "__main__":
-    print(检查视频是否下载过("asdas"))
+    print(获取所有下载索引())
