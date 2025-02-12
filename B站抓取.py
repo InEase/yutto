@@ -2,6 +2,10 @@ import time
 import os
 from yutto.mux import 获取所有下载索引
 from loguru import logger
+from pathlib import Path
+
+# sessdata 从 ~/.sessdata 文件中读取
+sessdata = Path("/Users/transmux/.sessdata").read_text()
 
 命令行参数 = [
     "-b",
@@ -11,7 +15,7 @@ from loguru import logger
     "-d",
     "/Users/transmux/Projects/Backup/Bili收藏视频/",
     "-c",
-    "ca7749c9%2C1754708388%2C766da%2A22CjDSuqLQN7vTkZsZyJD4eQ07mUEGfl7bTe49Xp3eV8w7OoG2QMj0RBfLOfmO9qkTi6kSVmYxQkRiaTZ0TmE0UG9hSEtXSzRVSWtwRWprdWlvdmp3eDRNcHMzRHdLZnhIVUZGWWI4MHFjbEpJbmxXcnkyc1l4RXdKMXlVN0xJTWFwaE1UM2JaZHZnIIEC",
+    sessdata,
 ]
 
 
