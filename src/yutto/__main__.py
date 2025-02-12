@@ -207,6 +207,12 @@ async def run(ctx: FetcherContext, args_list: list[argparse.Namespace]):
 
                 # 发送到数据库记录已下载视频
                 if episode_data["metadata"]:
+                    来源 = None
+                    for key in ["series_title", "username"]:
+                        if episode_data["metadata"].get(key):
+                            来源 = episode_data["metadata"].get(key)
+                            break
+
                     发布时间 = episode_data["metadata"].get("premiered")
                     # 时间戳转换为时间
                     发布时间 = datetime.fromtimestamp(发布时间)
@@ -219,6 +225,7 @@ async def run(ctx: FetcherContext, args_list: list[argparse.Namespace]):
                         "链接": episode_data["metadata"].get("website"),
                         "bvid": episode_data["metadata"].get("bvid"),
                         "发布时间": 发布时间,
+                        "来源": 来源,
                     }
                     插入视频下载记录(记录的信息)
                 Logger.new_line()
